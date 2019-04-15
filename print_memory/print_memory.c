@@ -6,11 +6,22 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 11:33:06 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/12 17:02:20 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/15 15:39:53 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print_memory.h"
+
+/*
+ * The main problems-points:
+ * -work with one string of 56 chars as many times as needed (according to the 
+ * size sent. Size will be: the size in tab[nb] * 4;
+ * -work with transfer to hexadecimal set: if the nb is so long that it occupies
+ * more than 4 bits, the division of bits if there are zeros in the beginning is
+ * done differently because of spaces.
+ * -if there are letters a, b, c, d, e, f in the hexadecimal set, we should put
+ * zero in the beginning and make 0a, 0b, 0c, 0d, 0e and 0f.
+ */
 
 void	ft_putchar(char c)
 {
@@ -24,28 +35,32 @@ void	ft_putstr(char *s, int len)
 
 void	print_memory(const void *addr, size_t size)
 {
-	int			*arr;
-	int			i;
+	int				*arr;
+	int				i;
 
 	arr = (int*)addr;
 	i = 0;
+	size /= 4;
 	while (size)
 	{
-		if (size / 4)
+		if ((int)size - 4 > 0)
 		{
 			if_4_bytes(&arr[i]);
 			i += 4;
+			size -= 4;
 		}
 		else
+		{
 			less_than_4_bytes(&arr[i], size);
-		size /= 4;
+			size = 0;
+		}
 	}
 }
 
 void	if_4_bytes(int *arr)
 {
-	int			i;
-	char		res[56];
+	int				i;
+	char			res[56];
 
 	i = 0;
 	while (i < 40)
@@ -66,8 +81,8 @@ void	if_4_bytes(int *arr)
 
 void	less_than_4_bytes(int *arr, size_t size)
 {
-	size_t		i;
-	char		res[40 + size * 4];
+	size_t			i;
+	char			res[40 + size * 4];
 
 	i = 0;
 	while (i < size * 10)
@@ -93,16 +108,16 @@ void	less_than_4_bytes(int *arr, size_t size)
 
 void	fill_with_nb(char *res, int *arr, size_t size)
 {
-	char		*main;
-	int			nb;
-	size_t		i;
-	size_t		j;
-	size_t		k;
-	int			len_nb_16;
+	char			*main;
+	unsigned int	nb;
+	size_t			i;
+	size_t			j;
+	size_t			k;
+	int				len_nb_16;
 
 	main = "0123456789abcdef";
 	i = 0;
-	j = size * 2;
+	j = 8;
 
 	while (i < size)
 	{
@@ -111,7 +126,7 @@ void	fill_with_nb(char *res, int *arr, size_t size)
 			while (nb)
 			{
 				len_nb_16 = 0;
-				while (nb && (j > i * 10 + size))
+				while (nb && (j > i * 10 + 4))
 				{
 					res[j] = main[nb % 16];
 					nb /= 16;
@@ -134,19 +149,32 @@ void	fill_with_nb(char *res, int *arr, size_t size)
 				if (res[i * 10] == '0')
 				{
 					k = 0;
-					while (len_nb_16)
-					{
-						res[i * 10 + k] = res[j + 1];
-						k++;
-						j++;
-						len_nb_16--;
-					}
-					while (k < size)
+					if (len_nb_16 <= 4)
+						while (len_nb_16)
+						{
+							res[i * 10 + k] = res[j + 1];
+							k++;
+							j++;
+							len_nb_16--;
+						}
+					else
+						while (len_nb_16)
+						{
+							if (res[j] == ' ')
+								j++;
+							if (res[i * 10 + k] == ' ')
+								k++;
+							res[i * 10 + k] = res[j];
+							k++;
+							j++;
+							len_nb_16--;
+						}
+					while (k < 4)
 					{
 						res[i * 10 + k] = '0';
 						k++;
 					}
-					while (k < size * 2)
+					while (k < 8)
 					{
 						k++;
 						res[i * 10 + k] = '0';
@@ -154,20 +182,20 @@ void	fill_with_nb(char *res, int *arr, size_t size)
 				}
 			}
 		i++;
-		j = i * 10 + size * 2;
+		j = i * 10 + 8;
 	}
-	put_ascii(res, size);
+	put_ascii(res);
 	ft_putstr(res, (40 + size * 4));
 	ft_putchar('\n');
 }
 
-void	put_ascii(char *res, size_t size)
+void	put_ascii(char *res)
 {
-	int			i;
-	int			j;
-	int			one;
-	int			two;
-	int			ascii;
+	int				i;
+	int				j;
+	int				one;
+	int				two;
+	int				ascii;
 
 	i = 0;
 	j = 0;
