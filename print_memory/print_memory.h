@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 12:26:27 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/15 12:27:36 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:13:44 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PRINT_MEMORY_H
 
 # include <unistd.h>
-# include <stdio.h>
 
 void	ft_putchar(char c);
 void	ft_putstr(char *s, int len);
