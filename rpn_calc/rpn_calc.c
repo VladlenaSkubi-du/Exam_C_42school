@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 16:48:43 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/16 16:54:36 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/16 19:25:18 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ void	rpn_calc(char *s)
 		write(1, "Error\n", 6);
 	else
 	{
-		//printf("%d	%d	%d\n", len, len - len / 2 - len / 2 / 2, len / 2);
 		nums = (int*)malloc(sizeof(int) * (len - len / 2 - len / 2 / 2));
 		signs = (char*)malloc(sizeof(char) * (len / 2));
-
-		fill_the_arrays(s, len, nums, signs);
+		fill_the_arrays(s, nums, signs);
+		free(nums);
+		free(signs);
 	}
 }
 
@@ -114,12 +114,10 @@ int		first_invalidity(char *s, int len)
 {
 	int		i;
 	int		sign;
-	int		space;
 	int		nb;
 
 	i = 0;
 	sign = 0;
-	space = 0;
 	nb = 0;
 	if (len < 5)
 		return (1);
@@ -160,38 +158,60 @@ int		first_invalidity(char *s, int len)
 	return (0);
 }
 
-void	fill_the_arrays(char *s, int len, int *nums, char *signs)
+void	fill_the_arrays(char *s, int *nums, char *signs)
 {
 	int		i;
-	int		j;
+	int		sign;
 	int		space;
 	char	*p;
+	int		res;
 
 	i = 0;
-	j = 0;
+	sign = 0;
 	space = 0;
-	p = s;
 	while (*s)
 	{	
+		p = s;
 		if (*s >= '0' && *s <= '9')
 		{
 			while (*s >= '0' && *s <= '9' && *s)
 				s++;
 			nums[i] = atoi(p);
-			//printf("p string =%s, s string =%s\n", p, s);
 			i++;
 		}
 		if (*s == ' ')
 			space++;
 		else if (*s == '+' || *s == '-' || *s == '*' || *s == '/' || *s == '%')
 		{
-			signs[j] = *s;
-			j++;
+			res = nums[0];
+			res = calculation(nums, res, *s);
+			sign++;
+			*nums += 2;
 		}
-		printf("num = %d, signs = %s, space = %d\n", nums[j], signs, space);
-		p = s;
 		s++;
 	}
+	//printf("nums = %d, signs = %s, space = %d\n", nums[j], signs, space);
+	//printf("nb =%d, signs =%d, space =%d\n", i, j, space);
+	if (!((sign + 1 == i) && (i + sign - 1 == space)))
+		write(1, "Error\n", 6);
+	else
+		printf("%d\n", res);
+}
+
+int		calculation(int *nums, int res, char signs)
+{
+	if (signs == '+')
+		res = res + nums[1];
+	else if (signs == '-')
+		res = res - nums[1];
+	else if (signs == '*')
+		res = res * nums[1];
+	else if (signs == '/')
+		res = res / nums[1];
+	else if (signs == '%')
+		res = res % nums[1];
+	printf("%d\n", res);
+	return (res);
 }
 
 int		ft_strlen(char *s)
