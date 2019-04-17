@@ -6,71 +6,22 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 16:48:43 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/16 19:25:18 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:16:21 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rpn_calc.h"
 
-/*Test for invalid_first:
- *-"100+ 677 *"
- *-"100 64"
- *-"100 64+ +"
- *-"100 64 **"
- *-"100 64 6 * * "
- *-"100 64 6 * * 5 ++"
- *-"100 64 6 * * 5 + +"
- *-"100 64 6 * * 5 1000 4563 + +"
- * Assignment name  : rpn_calc
-Expected files   : *.c, *.h 
-Allowed functions: atoi, printf, write, malloc, free
---------------------------------------------------------------------------------
-
-Write a program that takes a string which contains an equation written in
-Reverse Polish notation (RPN) as its first argument, evaluates the equation, and
-prints the result on the standard output followed by a newline. 
-
-Reverse Polish Notation is a mathematical notation in which every operator
-follows all of its operands. In RPN, every operator encountered evaluates the
-previous 2 operands, and the result of this operation then becomes the first of
-the two operands for the subsequent operator. Operands and operators must be
-spaced by at least one space.
-
-You must implement the following operators : "+", "-", "*", "/", and "%".
-
-If the string isn't valid or there isn't exactly one argument, you must print
-"Error" on the standard output followed by a newline.
-
-All the given operands must fit in a "int".
-
-Examples of formulas converted in RPN:
-
-3 + 4                   >>    3 4 +
-((1 * 2) * 3) - 4       >>    1 2 * 3 * 4 -  ou  3 1 2 * * 4 -
-50 * (5 - (10 / 9))     >>    5 10 9 / - 50 *
-
-Here's how to evaluate a formula in RPN:
-
-1 2 * 3 * 4 -
-2 3 * 4 -
-6 4 -
-2
-
-Or:
-
-3 1 2 * * 4 -
-3 2 * 4 -
-6 4 -
-2
-
-Examples:
-
-$> ./rpn_calc "1 2 * 3 * 4 +" | cat -e
-10$
-$> ./rpn_calc "1 2 3 4 +" | cat -e
-Error$
-$> ./rpn_calc |cat -e
-Error$
+/*
+**Test for invalid_first:
+**-"100+ 677 *"
+**-"100 64"
+**-"100 64+ +"
+**-"100 64 **"
+**-"100 64 6 * * "
+**-"100 64 6 * * 5 ++"
+**-"100 64 6 * * 5 + +"
+**-"100 64 6 * * 5 1000 4563 + +"
 */
 
 int		main(int argc, char **argv)
@@ -81,6 +32,12 @@ int		main(int argc, char **argv)
 		write(1, "Error\n", 6);
 	return (0);
 }
+
+/*
+**I tried to get rid of char *signs and not to write the same double times, but
+**could not solve the problems that arise if we count when we meet operands.
+**Better to collect everything and then count.
+*/
 
 void	rpn_calc(char *s)
 {
@@ -94,7 +51,7 @@ void	rpn_calc(char *s)
 	else
 	{
 		nums = (int*)malloc(sizeof(int) * (len - len / 2 - len / 2 / 2));
-		signs = (char*)malloc(sizeof(char) * (len / 2));
+		signs = (char*)malloc(sizeof(int) * (len / 2));
 		fill_the_arrays(s, nums, signs);
 		free(nums);
 		free(signs);
@@ -102,13 +59,13 @@ void	rpn_calc(char *s)
 }
 
 /*
- * Everything that we can check in the string:
- * -the first and the last char;
- * -the length of the string - not less than parameters: "1 2 *";
- * -there are other than needed letters;
- * -there int more than one space between the letters;
- * -there is more than one operand one after another;
- */
+** Everything that we can check in the string:
+** -the first and the last char;
+** -the length of the string - not less than parameters: "1 2 *";
+** -there are other than needed letters;
+** -there int more than one space between the letters;
+** -there is more than one operand one after another;
+*/
 
 int		first_invalidity(char *s, int len)
 {
@@ -121,7 +78,7 @@ int		first_invalidity(char *s, int len)
 	nb = 0;
 	if (len < 5)
 		return (1);
-	if (!(s[0] >= '0' && s[0] <= '9'))
+	if (!((s[0] >= '0' && s[0] <= '9') || s[0] == '-'))
 		return (1); //the first char
 	if (!(s[len - 1] == '+' || s[len - 1] == '-' || s[len - 1] == '*' ||
 				s[len - 1] == '/' || s[len - 1] == '%'))
@@ -131,6 +88,8 @@ int		first_invalidity(char *s, int len)
 		if (!((s[i] >= '0' && s[i] <= '9') || s[i] == ' ' || s[i] == '+' ||
 					s[i] == '-' || s[i] == '*' || s[i] == '/' || s[i] == '%'))
 			return (1); //not the needed letters
+		if (s[i] == '-' && (s[i + 1] >= '0' && s[i + 1] <= '9'))
+			i++; //for work with negative numbers
 		while ((s[i] >= '0' && s[i] <= '9') && s[i])
 		{
 			nb = 1;
@@ -141,7 +100,7 @@ int		first_invalidity(char *s, int len)
 		else
 			i++;
 		while ((s[i] == '+' || s[i] == '-' || s[i] == '*' ||
-					   	s[i] == '/' || s[i] == '%') && s[i])
+					s[i] == '/' || s[i] == '%') && s[i])
 		{
 			i++;
 			sign++;
@@ -158,20 +117,27 @@ int		first_invalidity(char *s, int len)
 	return (0);
 }
 
+/*
+**Second invalidity we can check after we have numbers that fit in an int and
+**can compare with the nb of signs and spaces
+**(I check spaces as a double check here)
+*/
+
 void	fill_the_arrays(char *s, int *nums, char *signs)
 {
 	int		i;
-	int		sign;
+	int		j;
 	int		space;
 	char	*p;
-	int		res;
 
 	i = 0;
-	sign = 0;
+	j = 0;
 	space = 0;
 	while (*s)
-	{	
+	{
 		p = s;
+		if (*s == '-' && (*(s + 1) >= '0' && *(s + 1) <= '9'))
+			s++; //for work with negative numbers
 		if (*s >= '0' && *s <= '9')
 		{
 			while (*s >= '0' && *s <= '9' && *s)
@@ -183,34 +149,41 @@ void	fill_the_arrays(char *s, int *nums, char *signs)
 			space++;
 		else if (*s == '+' || *s == '-' || *s == '*' || *s == '/' || *s == '%')
 		{
-			res = nums[0];
-			res = calculation(nums, res, *s);
-			sign++;
-			*nums += 2;
+			signs[j] = *s;
+			j++;
 		}
 		s++;
 	}
-	//printf("nums = %d, signs = %s, space = %d\n", nums[j], signs, space);
-	//printf("nb =%d, signs =%d, space =%d\n", i, j, space);
-	if (!((sign + 1 == i) && (i + sign - 1 == space)))
-		write(1, "Error\n", 6);
+	if (!((j + 1 == i) && (i + j - 1 == space)))
+		write(1, "Error\n", 6); //second level of invalidity check
 	else
-		printf("%d\n", res);
+		printf("%d\n", calculation(nums, signs));
 }
 
-int		calculation(int *nums, int res, char signs)
+int		calculation(int *nums, char *signs)
 {
-	if (signs == '+')
-		res = res + nums[1];
-	else if (signs == '-')
-		res = res - nums[1];
-	else if (signs == '*')
-		res = res * nums[1];
-	else if (signs == '/')
-		res = res / nums[1];
-	else if (signs == '%')
-		res = res % nums[1];
-	printf("%d\n", res);
+	int		res;
+	int		i;
+	int		j;
+
+	res = nums[0];
+	i = 0;
+	j = 1;
+	while (signs[i])
+	{
+		if (signs[i] == '+')
+			res = res + nums[j];
+		else if (signs[i] == '-')
+			res = res - nums[j];
+		else if (signs[i] == '*')
+			res = res * nums[j];
+		else if (signs[i] == '/')
+			res = res / nums[j];
+		else if (signs[i] == '%')
+			res = res % nums[j];
+		i++;
+		j++;
+	}
 	return (res);
 }
 

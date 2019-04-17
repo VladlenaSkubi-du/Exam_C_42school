@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 16:12:37 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/16 19:23:39 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:07:24 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void		rpn_calc(char *s);
 int			ft_strlen(char *s);
 int			first_invalidity(char *s, int len);
 void		fill_the_arrays(char *s, int *nums, char *signs);
-int			calculation(int *nums, int res, char signs);
-
+int			calculation(int *nums, char *signs);
 
 #endif
