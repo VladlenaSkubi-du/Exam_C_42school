@@ -6,17 +6,17 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 12:24:03 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/15 15:32:50 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:19:33 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print_memory.h"
 
-int main(void)
+int		main(void)
 {
-	int tab[11] = {0, 23, 150, 255,
-					12, 16, 21, 42,
-					144,-45, 5};
+	int	tab[11] = {0, 23, 150, 255,
+		12, 16, 21, 42,
+		144,-45, 5};
 	print_memory(tab, sizeof(tab));
 	return (0);
 }

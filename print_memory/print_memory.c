@@ -6,22 +6,22 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 11:33:06 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/15 15:39:53 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/17 11:21:48 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print_memory.h"
 
 /*
- * The main problems-points:
- * -work with one string of 56 chars as many times as needed (according to the 
- * size sent. Size will be: the size in tab[nb] * 4;
- * -work with transfer to hexadecimal set: if the nb is so long that it occupies
- * more than 4 bits, the division of bits if there are zeros in the beginning is
- * done differently because of spaces.
- * -if there are letters a, b, c, d, e, f in the hexadecimal set, we should put
- * zero in the beginning and make 0a, 0b, 0c, 0d, 0e and 0f.
- */
+** The main problems-points:
+** -work with one string of 56 chars as many times as needed (according to the
+** size sent. Size will be: the size in tab[nb] * 4;
+** -work with transfer to hexadecimal set: if the nb is so long that it occupies
+** more than 4 bits, the division of bits if there are zeros in the beginning is
+** done differently because of spaces.
+** -if there are letters a, b, c, d, e, f in the hexadecimal set, we should put
+** zero in the beginning and make 0a, 0b, 0c, 0d, 0e and 0f.
+*/
 
 void	ft_putchar(char c)
 {
@@ -118,7 +118,6 @@ void	fill_with_nb(char *res, int *arr, size_t size)
 	main = "0123456789abcdef";
 	i = 0;
 	j = 8;
-
 	while (i < size)
 	{
 		nb = arr[i];
@@ -140,7 +139,7 @@ void	fill_with_nb(char *res, int *arr, size_t size)
 					nb /= 16;
 					len_nb_16++;
 				}
-				if (res[j + 1] >= 'a' && res[j + 1] <= 'f' && len_nb_16 == 1) 
+				if (res[j + 1] >= 'a' && res[j + 1] <= 'f' && len_nb_16 == 1)
 				{
 					res[j] = '0';
 					len_nb_16++;
@@ -214,5 +213,5 @@ void	put_ascii(char *res)
 			res[40 + j] = ascii;
 		i += 2;
 		j++;
-	}	
+	}
 }
