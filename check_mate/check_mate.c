@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:26:24 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/11 12:26:50 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/18 19:05:29 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,42 @@
  *  $>
  */
 
+#include <unistd.h>
 
+void	print_map(char **map)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (map[i])
+	{
+		while (map[i][j])
+		{
+			write(1, &map[i][j], 1);
+			j++;
+		}
+		write(1, "\n", 1);
+		j = 0;
+		i++;	
+	}
+	
+	//write(1, "Success\n", 8);
+}
+
+void	check_mate(char **map)
+{
+	
+}
+
+int		main(int argc, char **argv)
+{
+	char	**map;
+	
+	if (argc < 2 || argc > 8)
+		write(1, "\n", 1);
+	else
+		check_mate(&argv[1]);
+	return (0);
+}
