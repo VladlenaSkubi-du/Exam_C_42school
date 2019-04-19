@@ -6,12 +6,13 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 19:48:01 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/18 18:10:20 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/19 14:19:25 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **The easiest test: "+++++[>++++++++++<-]>++.--."
+**Test with four cycles: "+[>+++++[>++++[>++++[>+>+<<-]<-]>>-->+<<<<-]<-]>>>>++.>.<+."
 **Comments: malloc is not needed, in conditions for '[' and ']' if is very
 **necessary that i++ and i-- stay before ifs.
 */
@@ -39,7 +40,7 @@ void		brainfuck(char *s, char *str)
 		else if (s[i] == '<')
 			j--;
 		else if (s[i] == '.')
-			write(1, str + j, 1);
+			write(1, &str[j], 1);
 		if (s[i] == '[' && str[j] == 0)
 		{
 			flag = 1;	
