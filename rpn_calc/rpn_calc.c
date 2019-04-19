@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 16:48:43 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/17 11:16:21 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/19 12:47:58 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	rpn_calc(char *s)
 	int		len;
 
 	len = ft_strlen(s);
-	if (first_invalidity(s, len) == 1)
+	if (first_invalidity(s, len) == -1)
 		write(1, "Error\n", 6);
 	else
 	{
@@ -77,17 +77,17 @@ int		first_invalidity(char *s, int len)
 	sign = 0;
 	nb = 0;
 	if (len < 5)
-		return (1);
+		return (-1);
 	if (!((s[0] >= '0' && s[0] <= '9') || s[0] == '-'))
-		return (1); //the first char
+		return (-1); //the first char
 	if (!(s[len - 1] == '+' || s[len - 1] == '-' || s[len - 1] == '*' ||
 				s[len - 1] == '/' || s[len - 1] == '%'))
-		return (1); //the last char
+		return (-1); //the last char
 	while (s[i])
 	{
 		if (!((s[i] >= '0' && s[i] <= '9') || s[i] == ' ' || s[i] == '+' ||
 					s[i] == '-' || s[i] == '*' || s[i] == '/' || s[i] == '%'))
-			return (1); //not the needed letters
+			return (-1); //not the needed letters
 		if (s[i] == '-' && (s[i + 1] >= '0' && s[i + 1] <= '9'))
 			i++; //for work with negative numbers
 		while ((s[i] >= '0' && s[i] <= '9') && s[i])
@@ -96,7 +96,7 @@ int		first_invalidity(char *s, int len)
 			i++;
 		}
 		if (nb == 1 && s[i] != ' ')
-			return (1); //not a space after a nb
+			return (-1); //not a space after a nb
 		else
 			i++;
 		while ((s[i] == '+' || s[i] == '-' || s[i] == '*' ||
@@ -106,15 +106,15 @@ int		first_invalidity(char *s, int len)
 			sign++;
 		}
 		if (sign > 1)
-			return (1); //there are two and more operands one after another
+			return (-1); //there are two and more operands one after another
 		if (s[i] == ' ' && s[i + 1] == ' ')
-			return (1); //there is double space
+			return (-1); //there is double space
 		else if (s[i] == ' ')
 			i++;
 		sign = 0;
 		nb = 0;
 	}
-	return (0);
+	return (1);
 }
 
 /*
