@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rpn_calc.c                                         :+:      :+:    :+:   */
+/*   rpn_calc2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/11 16:48:43 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/19 12:47:58 by sschmele         ###   ########.fr       */
+/*   Created: 2019/04/20 17:24:00 by sschmele          #+#    #+#             */
+/*   Updated: 2019/04/21 17:00:12 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rpn_calc.h"
+#include "rpn_calc2.h"
 
 /*
 **Test for invalid_first:
@@ -33,28 +33,28 @@ int		main(int argc, char **argv)
 	return (0);
 }
 
-/*
-**I tried to get rid of char *signs and not to write the same double times, but
-**could not solve the problems that arise if we count when we meet operands.
-**Better to collect everything and then count.
-*/
-
 void	rpn_calc(char *s)
 {
-	int		*nums;
-	char	*signs;
 	int		len;
+	t_stack	*nums;
 
 	len = ft_strlen(s);
-	if (first_invalidity(s, len) == -1)
+	if (invalidity(s, len) == -1)
 		write(1, "Error\n", 6);
 	else
 	{
-		nums = (int*)malloc(sizeof(int) * (len - len / 2 - len / 2 / 2));
-		signs = (char*)malloc(sizeof(int) * (len / 2));
-		fill_the_arrays(s, nums, signs);
-		free(nums);
-		free(signs);
+		if (!(nums = malloc(sizeof(t_stack))))
+			write(1, "No space left\n", 14);
+		else
+		{
+			nums->nb = 0;
+			nums->next = NULL;
+			fill_the_stack(s, nums);
+			if (nums->next != NULL)
+				clean_stacks(&nums);
+			else
+				free(nums);
+		}
 	}
 }
 
@@ -63,128 +63,158 @@ void	rpn_calc(char *s)
 ** -the first and the last char;
 ** -the length of the string - not less than parameters: "1 2 *";
 ** -there are other than needed letters;
-** -there int more than one space between the letters;
 ** -there is more than one operand one after another;
+** -there should be 1 nb more than the signs;
 */
 
-int		first_invalidity(char *s, int len)
+int		invalidity(char *s, int len)
 {
 	int		i;
-	int		sign;
 	int		nb;
+	int		sign;
+	int		num;
+	int		si;
 
 	i = 0;
-	sign = 0;
 	nb = 0;
+	sign = 0;
+	num = 0;
+	si = 0;
 	if (len < 5)
 		return (-1);
-	if (!((s[0] >= '0' && s[0] <= '9') || s[0] == '-'))
-		return (-1); //the first char
-	if (!(s[len - 1] == '+' || s[len - 1] == '-' || s[len - 1] == '*' ||
-				s[len - 1] == '/' || s[len - 1] == '%'))
-		return (-1); //the last char
+	if (!(s[0] == '-' || (s[0] >= '0' && s[0] <= '9')))
+		return (-1);
+	if (!(s[len - 1] == '+' || s[len - 1] == '-' || s[len - 1] == '*'
+				|| s[len - 1] == '/' || s[len - 1] == '%'))
+		return (-1);
 	while (s[i])
 	{
-		if (!((s[i] >= '0' && s[i] <= '9') || s[i] == ' ' || s[i] == '+' ||
-					s[i] == '-' || s[i] == '*' || s[i] == '/' || s[i] == '%'))
-			return (-1); //not the needed letters
+		if (!((s[i] >= '0' && s[i] <= '9') || s[i] == ' ' || s[i] == '+'
+					|| s[i] == '-' || s[i] == '*' || s[i] == '/' || s[i] == '%'))
+			return (-1);
 		if (s[i] == '-' && (s[i + 1] >= '0' && s[i + 1] <= '9'))
-			i++; //for work with negative numbers
-		while ((s[i] >= '0' && s[i] <= '9') && s[i])
+			i++;
+		while (s[i] >= '0' && s[i] <= '9')
 		{
 			nb = 1;
 			i++;
 		}
-		if (nb == 1 && s[i] != ' ')
-			return (-1); //not a space after a nb
+		if (s[i] == ' ')
+			while (s[i] == ' ')
+				i++;
 		else
-			i++;
+			return (-1);
 		while ((s[i] == '+' || s[i] == '-' || s[i] == '*' ||
-					s[i] == '/' || s[i] == '%') && s[i])
+				s[i] == '/' || s[i] == '%') &&
+				(!(s[i + 1] >= '0' && s[i + 1] <= '9')))
 		{
-			i++;
 			sign++;
+			i++;
 		}
 		if (sign > 1)
-			return (-1); //there are two and more operands one after another
-		if (s[i] == ' ' && s[i + 1] == ' ')
-			return (-1); //there is double space
-		else if (s[i] == ' ')
-			i++;
-		sign = 0;
+			return (-1);
+		if (nb == 1)
+			num++;
+		if (sign == 1)
+			si++;
 		nb = 0;
+		sign = 0;
 	}
+	if (si + 1 != num)
+		return (-1);
 	return (1);
 }
 
-/*
-**Second invalidity we can check after we have numbers that fit in an int and
-**can compare with the nb of signs and spaces
-**(I check spaces as a double check here)
-*/
-
-void	fill_the_arrays(char *s, int *nums, char *signs)
+void	fill_the_stack(char *s, t_stack *nums)
 {
-	int		i;
-	int		j;
-	int		space;
 	char	*p;
+	int		tmp;
+	int		res;
+	int		flag;
 
-	i = 0;
-	j = 0;
-	space = 0;
+	flag = 0;
 	while (*s)
 	{
-		p = s;
-		if (*s == '-' && (*(s + 1) >= '0' && *(s + 1) <= '9'))
-			s++; //for work with negative numbers
-		if (*s >= '0' && *s <= '9')
+		if ((*s == '-' && (*(s + 1) >= '0' && *(s + 1) <= '9')) ||
+				(*s >= '0' && *s <= '9'))
 		{
-			while (*s >= '0' && *s <= '9' && *s)
+			p = s;
+			if (push_n(&nums, atoi(p)) == -2)
+			{
+				write(1, "No space left\n",14);
+				break ;
+			}
+			if (*s == '-')
 				s++;
-			nums[i] = atoi(p);
-			i++;
+			while (*s >= '0' && *s <= '9')
+				s++;
 		}
-		if (*s == ' ')
-			space++;
-		else if (*s == '+' || *s == '-' || *s == '*' || *s == '/' || *s == '%')
+		while (*s == ' ')
+			s++;
+		if ((*s == '+' || *s == '-' || *s == '*' || *s == '/' || *s == '%') &&
+				!(*(s + 1) >= '0' && *(s + 1) <= '9'))
 		{
-			signs[j] = *s;
-			j++;
+			tmp = pop_n(&nums);
+			res = pop_n(&nums);
+			if (*s == '+')
+				res += tmp;
+			else if (*s == '-')
+				res -= tmp;
+			else if (*s == '*')
+				res *= tmp;
+			else if (*s == '/')
+				res /= tmp;
+			else if (*s == '%')
+				res %= tmp;
+			if (push_n(&nums, res) == -2)
+			{
+				write(1, "No space left\n",14);
+				flag++;
+				break ;
+			}
+			s++;
 		}
-		s++;
 	}
-	if (!((j + 1 == i) && (i + j - 1 == space)))
-		write(1, "Error\n", 6); //second level of invalidity check
-	else
-		printf("%d\n", calculation(nums, signs));
+	if (flag == 0)
+		printf("%d\n", pop_n(&nums));
 }
 
-int		calculation(int *nums, char *signs)
+int		pop_n(t_stack **head_n)
 {
 	int		res;
-	int		i;
-	int		j;
+	t_stack	*tmp;
 
-	res = nums[0];
-	i = 0;
-	j = 1;
-	while (signs[i])
-	{
-		if (signs[i] == '+')
-			res = res + nums[j];
-		else if (signs[i] == '-')
-			res = res - nums[j];
-		else if (signs[i] == '*')
-			res = res * nums[j];
-		else if (signs[i] == '/')
-			res = res / nums[j];
-		else if (signs[i] == '%')
-			res = res % nums[j];
-		i++;
-		j++;
-	}
+	tmp = *head_n;
+	if ((*head_n)->next)
+		*head_n = (*head_n)->next;
+	res = tmp->nb;
+	free(tmp);
 	return (res);
+}
+
+int		push_n(t_stack **head_n, int nb)
+{
+	t_stack	*tmp;
+
+	if (!(tmp = malloc(sizeof(t_stack))))
+		return (-2);
+	tmp->next = *head_n;
+	tmp->nb = nb;
+	*head_n = tmp;
+	return (0);
+}
+
+void	clean_stacks(t_stack **head)
+{
+	t_stack	*tmp;
+
+	while (*head)
+	{
+		tmp = *head;
+		if ((*head)->next)
+			(*head) = (*head)->next;
+		free(tmp);
+	}
 }
 
 int		ft_strlen(char *s)
