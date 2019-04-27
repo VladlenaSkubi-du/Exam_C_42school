@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:18:11 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/27 17:02:04 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/27 18:27:46 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 # define BRACKETS_H
 
 # include <unistd.h>
-# include <stdio.h> //DELETE
 
-void    brackets(char **arr);
-int     check(char *s, int max);
-int     invalid(char *s);
+void	brackets(char **arr);
+int		check(char *s, int max);
+int		invalid(char *s);
 
 #endif

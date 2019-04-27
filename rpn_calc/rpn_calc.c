@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:24:00 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/21 17:00:12 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/27 18:25:58 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	fill_the_stack(char *s, t_stack *nums)
 			p = s;
 			if (push_n(&nums, atoi(p)) == -2)
 			{
-				write(1, "No space left\n",14);
+				write(1, "No space left\n", 14);
 				break ;
 			}
 			if (*s == '-')
@@ -168,7 +168,7 @@ void	fill_the_stack(char *s, t_stack *nums)
 				res %= tmp;
 			if (push_n(&nums, res) == -2)
 			{
-				write(1, "No space left\n",14);
+				write(1, "No space left\n", 14);
 				flag++;
 				break ;
 			}
