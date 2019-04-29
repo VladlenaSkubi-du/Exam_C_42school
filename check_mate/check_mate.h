@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 11:43:35 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/19 15:16:46 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/29 15:37:30 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,12 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-
-typedef struct	s_list
-{
-	int			size;
-	int			K_x;
-	int			K_y;
-}				t_list;
+# include <stdio.h>
 
 void	print_map(char **map);
 int		ft_strlen(char *s);
 void	check_mate(char **map, int size);
 int		check_validity(char **map, int size);
-void	check_result(t_list *chess);
+int		check_result(char **map, int size, short i, short j);
 
 #endif

@@ -1,33 +1,40 @@
-Assignment name  : brainfuck
+Assignment name  : check_mate 
 Expected files   : *.c, *.h
 Allowed functions: write, malloc, free
 --------------------------------------------------------------------------------
 
-Write a Brainfuck interpreter program.
-The source code will be given as first parameter.
-The code will always be valid, with no more than 4096 operations.
-Brainfuck is a minimalist language. It consists of an array of bytes 
-(in our case, let's say 2048 bytes) initialized to zero, 
-and a pointer to its first byte.
+Write a program who takes rows of a chessboard in argument and check if your 
+King is in a check position.
 
-Every operator consists of a single character :
-- '>' increment the pointer ;
-- '<' decrement the pointer ;
-- '+' increment the pointed byte ;
-- '-' decrement the pointed byte ;
-- '.' print the pointed byte on standard output ;
-- '[' go to the matching ']' if the pointed byte is 0 (while start) ;
-- ']' go to the matching '[' if the pointed byte is not 0 (while end).
+Chess is played on a chessboard, a squared board of 8-squares length with 
+specific pieces on it : King, Queen, Bishop, Knight, Rook and Pawns.
+For this exercice, you will only play with Pawns, Bishops, Rooks and Queen...
+and obviously a King.
 
-Any other character is a comment.
+Each piece have a specific method of movement, and all patterns of capture are
+detailled in the examples.txt file.
+
+A piece can capture only the first ennemy piece it founds on its capture
+patterns.
+
+The board have a variable size but will remains a square. There's only one King
+and all other pieces are against it. All other characters except those used for
+pieces are considered as empty squares.
+
+The King is considered as in a check position when an other enemy piece can
+capture it. When it's the case, you will print "Success" on the standard output
+followed by a newline, otherwise you will print "Fail" followed by a newline.
+
+If there is no arguments, the program will only print a newline.
 
 Examples:
 
-$>./brainfuck "++++++++++[>+++++++>++++++++++>+++>+<<<<-]
->++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>." | cat -e
-Hello World!$
-$>./brainfuck "+++++[>++++[>++++H>+++++i<<-]>>>++\n<<<<-]>>--------.>+++++.>." | cat -e
-Hi$
-$>./brainfuck | cat -e
+$> ./chessmate '..' '.K' | cat -e
+Fail$
+$> ./check_mate 'R...' '.K..' '..P.' '....' | cat -e - THE WRONG ONE
+Success$
+$> ./chessmate 'R...' 'iheK' '....' 'jeiR' | cat -e - THE WRONG ONE
+Success$
+$> ./chessmate | cat -e
 $
-
+$>
