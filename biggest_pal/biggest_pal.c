@@ -5,41 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/11 16:49:52 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/29 18:02:41 by sschmele         ###   ########.fr       */
+/*   Created: 2019/04/30 18:59:26 by sschmele          #+#    #+#             */
+/*   Updated: 2019/04/30 19:01:07 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*Assignment name  : biggest_pal
-Expected files   : *.c, *.h
-Allowed functions: write
---------------------------------------------------------------------------------
-
-Write a program named biggest_pal that takes a string as argument and prints the
-biggest palindrome included inside this string, followed by a newline.
-
-This string contains only lowercase characters.
-
-If there is two palindromes of the same length, you have to print the last one.
-
-If there is more or less than 1 argument, your program must print only a newline
-only.
-
-Exemples:
-
-$> biggest_pal "abcba"
-abcba
-$> biggest_pal "aaaaaaaaaabbcbbaaaa"
-aaaabbcbbaaaa
-$> biggest_pal "aooibdaoiwhoihwdoinzeldaisaboyobasiadlezfdsfnslk"
-zeldaisaboyobasiadlez
-$> biggest_pal "aeibaabaammaabaalek"
-aabaammaabaa
-$> biggest_pal abeb qpinqwjobo qkmnwoiq
-
-$> biggest_pal
-
-$>*/
 
 #include "biggest_pal.h"
 
@@ -53,39 +22,90 @@ int		ft_strlen(char *s)
 	return (s - start);
 }
 
-void	ft_putstrtill(char *s, int i)
+void	ft_putnstr(char *s, int len)
 {
 	char	*start;
-	int		len;
+	int		nb;
 
 	start = s;
-	len = 0;
-	while (s[len] && s[len] != s[i])
-		len++;
-	start[len + 1] = '\0';
-	write(1, start, len + 1);
+	nb = 0;
+	while (s[nb] && s[nb] != s[len])
+		nb++;
+	start[len] = '\0';
+	write(1, start, len);
+}
+
+int		check(char *s, int len)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = len - 1;
+	while (i != j && j >= 0 && i < len)
+	{
+		if (s[i] != s[j])
+			return (-1);
+		i++;
+		j--;
+	}
+	return (1);
 }
 
 void	biggest_pal(char *s)
 {
-	int		len;
 	int		i;
-	char	*p;
+	int		j;
+	int		k;
+	char	*start;
+	int		fin;
+	int		len;
+	int		tmp;
 
-	i = 1;
-	p = s;
-	len = ft_strlen(p);
+	i = 0;
+	j = 0;
+	k = 0;
+	start = s;
+	len = 1;
+	while (s[i])
+	{
+		fin = ft_strlen(s + i);
+		while ((tmp = check(s + i, fin - k)) != 1)
+			k++;
+		if (tmp == 1)
+			if (fin - k > len)
+			{
+				start = &s[i + j];
+				len = fin - k;
+				fin -= k;
+			}
+		k = 0;
+		while ((tmp = check(s + i + j, fin - k)) != 1)
+		{
+			k += 2;
+			j++;
+		}
+		if (tmp == 1)
+			if (fin - k > len)
+			{
+				start = &s[i + j];
+				len = fin - k;
+				fin -= k;
+			}
+		j = 0;
+		k = 0;
+		i++;
+	}
 	if (len == 1)
-		write(1, p, 1);
-	if (len == 2)
-
+		write(1, &s[ft_strlen(s) - 1], 1);
+	else
+		ft_putnstr(start, len);
 }
 
 int		main(int argc, char **argv)
 {
 	if (argc == 2)
 		biggest_pal(argv[1]);
-	else
-		write(1, "\n", 1);
+	write(1, "\n", 1);
 	return (0);
 }

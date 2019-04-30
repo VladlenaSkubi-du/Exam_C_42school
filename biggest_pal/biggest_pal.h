@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 17:15:28 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/29 18:02:45 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/04/30 18:13:22 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 void	biggest_pal(char *s);
 int		ft_strlen(char *s);
+int		check(char *s, int len);
 void	ft_putnstr(char *s, int i);
 
 #endif
