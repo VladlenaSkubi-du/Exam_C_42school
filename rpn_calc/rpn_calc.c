@@ -6,11 +6,11 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 17:24:00 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/27 18:25:58 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/05/02 17:02:21 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rpn_calc2.h"
+#include "rpn_calc.h"
 
 /*
 **Test for invalid_first:
@@ -50,10 +50,7 @@ void	rpn_calc(char *s)
 			nums->nb = 0;
 			nums->next = NULL;
 			fill_the_stack(s, nums);
-			if (nums->next != NULL)
-				clean_stacks(&nums);
-			else
-				free(nums);
+			free(nums);
 		}
 	}
 }
@@ -142,6 +139,7 @@ void	fill_the_stack(char *s, t_stack *nums)
 			if (push_n(&nums, atoi(p)) == -2)
 			{
 				write(1, "No space left\n", 14);
+				flag++;
 				break ;
 			}
 			if (*s == '-')
@@ -163,9 +161,25 @@ void	fill_the_stack(char *s, t_stack *nums)
 			else if (*s == '*')
 				res *= tmp;
 			else if (*s == '/')
+			{
+				if (tmp == 0)
+				{
+					write(1, "Error\n", 6);
+					flag++;
+					break ;
+				}
 				res /= tmp;
+			}
 			else if (*s == '%')
+			{
+				if (tmp == 0)
+				{
+					write(1, "Error\n", 6);
+					flag++;
+					break ;
+				}
 				res %= tmp;
+			}
 			if (push_n(&nums, res) == -2)
 			{
 				write(1, "No space left\n", 14);
@@ -177,6 +191,8 @@ void	fill_the_stack(char *s, t_stack *nums)
 	}
 	if (flag == 0)
 		printf("%d\n", pop_n(&nums));
+	if (flag > 0)
+		clean_stacks(&nums);
 }
 
 int		pop_n(t_stack **head_n)
