@@ -2,7 +2,7 @@
 Here you can find exercises of levels 4 and 5 that seemed difficult for me.
 
 # Usage
-If most of the exercises we had to write programs. So you need to enter a folder needed and compile the program:
+In most of the exercises we had to write programs. So you need to enter a folder needed and compile the program:
 
 	gcc -Wall -Wextra -Werror [program name] [file.c name]
 
@@ -10,8 +10,8 @@ And then launch the program:
 
 	./[program name] [arguments according to the subject]
 
-If each folder you ca find subject in English.
-If we had to write a function, there will be also main.c files in the folder needed.
+In each folder you can find a subject in English.
+If we need to write a function, there is also a main.c file in the folder needed.
 So you do:
 
 	gcc -Wall -Wextra -Werror [program name] [file.c name] main.c
