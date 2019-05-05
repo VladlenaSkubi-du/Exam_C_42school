@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 12:24:03 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/17 11:19:33 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/05/05 19:10:03 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int		main(void)
 {
-	int	tab[11] = {0, 23, 150, 255,
-		12, 16, 21, 42,
-		144,-45, 5};
-	print_memory(tab, sizeof(tab));
+	float	tab[] = { 5.6785, 3.567 };
+	printf("%zu\n", sizeof(size_t));
+//	print_memory(tab, sizeof(tab));
 	return (0);
 }

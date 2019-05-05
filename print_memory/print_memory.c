@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 11:33:06 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/17 11:21:48 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/05/05 19:08:33 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	ft_putstr(char *s, int len)
 
 void	print_memory(const void *addr, size_t size)
 {
-	int				*arr;
+	unsigned char	*arr;
 	int				i;
 
-	arr = (int*)addr;
+	arr = (unsigned char*)addr;
 	i = 0;
 	size /= 4;
 	while (size)
