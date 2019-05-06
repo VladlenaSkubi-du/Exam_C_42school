@@ -34,8 +34,6 @@ You will find the following exercises done:
 * flood_fill - level 5
 * fprime - level 4_0
 * ft_itoa_base - level 5_2
-* ft_list_foreach - level 4_0
-* ft_list_remove_if - level 4_2
 * options - level 5_5
 * print_memory - level 5_1
 * rpn_calc - level 5_4
