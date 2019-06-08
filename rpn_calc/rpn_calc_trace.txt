@@ -1,0 +1,119 @@
+= Host-specific information ====================================================
+$> hostname; uname -msr
+e2r13p7.42.fr
+Darwin 16.7.0 x86_64
+$> date
+Mon Feb 19 17:41:45 CET 2018
+$> gcc --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
+Apple LLVM version 9.0.0 (clang-900.0.38)
+Target: x86_64-apple-darwin16.7.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$> clang --version
+Apple LLVM version 9.0.0 (clang-900.0.38)
+Target: x86_64-apple-darwin16.7.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+
+= User files collection ========================================================
+Collecting user files from Vogsphere
+Repository URL: auto-exam/2018/c-exam-alone-in-the-dark-beginner/practice-exam_20180219/rnugroho3
+
+= Git history ==================================================================
+$> git -C /var/folders/6w/5q3xlj2d2zvf5ttgvtbtdfzw0000gq/T/tmprFgPxz/user log --pretty='%H - %an, %ad : %s'
+3f7b23de1c5ab02d25656852ecec92c85a04e86a - rizkyario, Mon Feb 19 17:36:14 2018 +0100 : rpn
+ 
+ = Collected files ==========================================
+ $> ls -lAR /var/folders/6w/5q3xlj2d2zvf5ttgvtbtdfzw0000gq/T/tmprFgPxz/user
+ total 24
+ -rw-r--r--  1 deepthought  deepthought  6148 Feb 19 17:41 .DS_Store
+ -rw-r--r--  1 deepthought  deepthought   345 Feb 19 17:41 __GIT_HISTORY
+ drwxr-xr-x  4 deepthought  deepthought   136 Feb 19 17:41 rpn_calc
+
+ /var/folders/6w/5q3xlj2d2zvf5ttgvtbtdfzw0000gq/T/tmprFgPxz/user/rpn_calc:
+ total 16
+ -rw-r--r--  1 deepthought  deepthought  1170 Feb 19 17:41 main.c
+ -rw-r--r--  1 deepthought  deepthought  2112 Feb 19 17:41 rpn_calc.c
+  
+  = rpn_calc =====================================================================
+  $> clang -Wextra -Wall -Werror rpn_calc.c main.c -o user_exe 
+
+  = Test 1 ===================================================
+  $> ./3i7x5uzggydjf1k5rvrl99hi 
+  $> diff -U 3 user_output_test1 test1.output | cat -e
+
+  Diff OK :D
+  = Test 2 ===================================================
+  $> ./6elhzpgr65u898o5br7vfqa8 "2 3 -" "5 6 +"
+  $> diff -U 3 user_output_test2 test2.output | cat -e
+
+  Diff OK :D
+  = Test 3 ===================================================
+  $> ./9vj7wjg6p895peb1gx57exvc "2 -"
+  $> diff -U 3 user_output_test3 test3.output | cat -e
+
+  Diff OK :D
+  = Test 4 ===================================================
+  $> ./7u0l00sf9h8xrufb8z4o6yav "-"
+  $> diff -U 3 user_output_test4 test4.output | cat -e
+
+  Diff OK :D
+  = Test 5 ===================================================
+  $> ./pq5j2sz1rn62se9w6nhlhkdw "2 5 6 -"
+  $> diff -U 3 user_output_test5 test5.output | cat -e
+
+  Diff OK :D
+  = Test 6 ===================================================
+  $> ./e3iygtvyc265pq1zih63ootl "3 4 +"
+  $> diff -U 3 user_output_test6 test6.output | cat -e
+
+  Diff OK :D
+  = Test 7 ===================================================
+  $> ./74aqxd2ojk4lq1phhj0whrwg "2 4 + 8 *"
+  $> diff -U 3 user_output_test7 test7.output | cat -e
+
+  Diff OK :D
+  = Test 8 ===================================================
+  $> ./owplhm3tp35kpmd4d75ac9io "50 10 25 + -"
+  $> diff -U 3 user_output_test8 test8.output | cat -e
+
+  Diff OK :D
+  = Test 9 ===================================================
+  $> ./4rj3nnnoxfx3g17ai2zjn522 "1000 5 2 * /"
+  $> diff -U 3 user_output_test9 test9.output | cat -e
+
+  Diff OK :D
+  = Test 10 ==================================================
+  $> ./t1gwr8fwit1ot2xask1mtlus "1000 3 %"
+  $> diff -U 3 user_output_test10 test10.output | cat -e
+
+  Diff OK :D
+  = Test 11 ==================================================
+  $> ./3hfyk6tbq1o3vzyhwh6o3563 "1000 0 /"
+  $> diff -U 3 user_output_test11 test11.output | cat -e
+
+  Diff OK :D
+  = Test 12 ==================================================
+  $> ./mf1tiayl7whkiu9eojecj3k7 "1000 0 %"
+  $> diff -U 3 user_output_test12 test12.output | cat -e
+
+  Diff OK :D
+  = Test 13 ==================================================
+  $> ./9wolro7gd4xaxm4p6ihrgbmm "-1000 -1 *"
+  $> diff -U 3 user_output_test13 test13.output | cat -e
+
+  Diff OK :D
+  = Test 14 ==================================================
+  $> ./13deb5jzndg4a5sj5w7t08b7 "-111 45 123 * 26 73 + + - 78 * -85 / 123 -"
+  $> diff -U 3 user_output_test14 test14.output | cat -e
+
+  Diff OK :D
+  = Test 15 ==================================================
+  $> ./xjwl7qgbizzqnl1iqp1g1gdz "78 326 542 96 1452 36 965 % - * / - +"
+  $> diff -U 3 user_output_test15 test15.output | cat -e
+
+  Diff OK :D
+  Grade: 1
+
+  = Final grade: 1 ===============================================================

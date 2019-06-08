@@ -6,14 +6,14 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 19:48:01 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/27 18:31:13 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/06/08 14:21:14 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **The easiest test: "+++++[>++++++++++<-]>++.--."
 **Test with four cycles: "+[>+++++[>++++[>++++[>+>+<<-]<-]>>-->+<<<<-]<-]>>>>++.>.<+."
-**Comments: malloc is not needed, in conditions for '[' and ']' if is very
+**Comments: malloc is not needed, in conditions for '[' and ']'. it is very
 **necessary that i++ and i-- stay before ifs.
 */
 

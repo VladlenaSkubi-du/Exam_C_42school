@@ -1,0 +1,60 @@
+= Host-specific information ====================================================
+$> hostname; uname -msr
+e3r10p10.42.fr
+Darwin 15.2.0 x86_64
+$> date
+Tue Jan 19 12:31:41 CET 2016
+$> gcc --version
+	Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
+Apple LLVM version 7.0.2 (clang-700.1.81)
+	Target: x86_64-apple-darwin15.2.0
+	Thread model: posix
+	$> clang --version
+Apple LLVM version 7.0.2 (clang-700.1.81)
+	Target: x86_64-apple-darwin15.2.0
+	Thread model: posix
+
+	= User files collection ========================================================
+	Collecting user files from Vogsphere
+	Repository URL: auto-exam/2016/c-exam-beginner/exam_20160119/dtedgui
+
+	= Git history ==================================================================
+	$> git -C /var/folders/1c/t24ltzsn0jx02wkfh94_stz40000gq/T/tmpsMiNcF/user log --pretty='%H - %an, %ad : %s'
+	c127072e74987f53b899434d56c424eecc8070fa - Exam 42, Tue Jan 19 12:30:21 2016 +0100 : print_mem
+	a5f96ef74cb7e65a3d3cf0563e99fe91d5841832 - Exam 42, Tue Jan 19 10:46:27 2016 +0100 : lvl 5
+
+	= Collected files ==========================================
+	$> ls -lAR /var/folders/1c/t24ltzsn0jx02wkfh94_stz40000gq/T/tmpsMiNcF/user
+	total 8
+	-rw-r--r--  1 deepthought  deepthought  508 Jan 19 12:31 __GIT_HISTORY
+	drwxr-xr-x  3 deepthought  deepthought  102 Jan 19 12:31 ft_itoa_base
+	drwxr-xr-x  3 deepthought  deepthought  102 Jan 19 12:31 print_memory
+
+	/var/folders/1c/t24ltzsn0jx02wkfh94_stz40000gq/T/tmpsMiNcF/user/ft_itoa_base:
+	total 8
+	-rw-r--r--  1 deepthought  deepthought  1929 Jan 19 12:31 ft_itoa_base.c
+
+	/var/folders/1c/t24ltzsn0jx02wkfh94_stz40000gq/T/tmpsMiNcF/user/print_memory:
+	total 8
+	-rw-r--r--  1 deepthought  deepthought  2219 Jan 19 12:31 print_memory.c
+
+	= print_memory =================================================================
+	$> clang -Wextra -Wall -Werror print_memory.c main.c -o user_exe 
+
+	= Test 1 ===================================================
+	$> ./p83dac8q2pdzgx4g6lit1nf0
+	$> diff -U 3 user_output_test1 test1.output | cat -e
+	0000 0000 0000 0000                     ........$
+	0001 0203 0405 0607 0809 0a0b 0c0d 0e0f ................$
+	1011 1213 1415 1617 1819 1a1b 1c1d 1e1f ................$
+	2021 2223 2425 2627 2829 2a2b 2c2d 2e2f .!"#$%&'()*+,-./$
+	3031 3233 3435 3637 3839 3a3b 3c3d 3e3f 0123456789:;<=>?$
+	4041 4243 4445 4647 4849 4a4b 4c4d 4e4f @ABCDEFGHIJKLMNO$
+	5051 5253 5455 5657 5859 5a5b 5c5d 5e5f PQRSTUVWXYZ[\]^_$
+
+	e0e1 e2e3 e4e5 e6e7 e8e9 eaeb eced eeef ................$
+	f0f1 f2f3 f4f5 f6f7 f8f9 fafb fcfd feff ................$
+	0000 0000 0000 0000 0000 0000 0000 0000 ................$
+	0000 0000 00                            .....$
+
+
