@@ -6,7 +6,7 @@
 /*   By: sschmele <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 12:26:24 by sschmele          #+#    #+#             */
-/*   Updated: 2019/04/29 15:53:33 by sschmele         ###   ########.fr       */
+/*   Updated: 2019/06/08 15:10:59 by sschmele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,45 +49,78 @@ int		check_result(char **map, int size, short i, short j)
 	short	x;
 	short	y;
 
-	x = -1;
-	y = 0;
-	while (i + (++x) + 1 < size)
-		if (map[i + x + 1][j + y] == 'R' || map[x + i + 1][j + y] == 'Q')
+	x = i;
+	y = j;
+	while (i < size)
+	{
+		if (map[i][j] == 'R' || map[i][j] == 'Q')
 			return (-1);
-	x = -1;
-	while (i - (++x) - 1 >= 0)
-		if (map[i - x - 1][j + y] == 'R' || map[i - x - 1][j + y] == 'Q')
+		i++;
+	}
+	i = x;
+	while (i >= 0)
+	{
+		if (map[i][j] == 'R' || map[i][j] == 'Q')
 			return (-1);
-	x = 0;
-	y = -1;
-	while (j + (++y) + 1 < size)
-		if (map[i + x][j + y + 1] == 'R' || map[i + x][j + y + 1] == 'Q')
+		i--;
+	}
+	i = x;
+	while (j < size)
+	{
+		if (map[i][j] == 'R' || map[i][j] == 'Q')
 			return (-1);
-	y = -1;
-	while (j - (++y) - 1 >= 0)
-		if (map[i + x][j - y - 1] == 'R' || map[i + x][j - y - 1] == 'Q')
+		j++;
+	}
+	j = y;
+	while (j >= 0)
+	{
+		if (map[i][j] == 'R' || map[i][j] == 'Q')
 			return (-1);
-	x = -1;
-	y = -1;
-	while (i + (++x) + 1 < size && j + (++y) + 1 < size)
-		if (map[i + x + 1][j + y + 1] == 'Q' || map[i + x + 1][j + y + 1] == 'B'
-				|| map[i + x + 1][j + y + 1] == 'P')
+		j--;
+	}
+	i = x;
+	j = y;
+	while (i < size && j < size)
+	{
+		if (map[i][j] == 'Q' || map[i][j] == 'B')
 			return (-1);
-	x = -1;
-	y = -1;
-	while (i - (++x) - 1 >= 0 && j + (++y) + 1 < size)
-		if (map[i - x - 1][j + y + 1] == 'Q' || map[i - x - 1][j + y + 1] == 'B')
+		i++;
+		j++;
+	}
+	i = x;
+	j = y;
+	while (i >= 0 && j < size)
+	{
+		if (map[i][j] == 'Q' || map[i][j] == 'B')
 			return (-1);
-	x = -1;
-	y = -1;
-	while (i + (++x) + 1 < size && j - (++y) - 1 >= 0)
-		if (map[i + x + 1][j - y - 1] == 'Q' || map[i + x + 1][j - y - 1] == 'B'
-				|| map[i + x + 1][j - y - 1] == 'P')
+		i--;
+		j++;
+	}
+	i = x;
+	j = y;
+	while (i < size && j >= 0)
+	{
+		if (map[i][j] == 'Q' || map[i][j] == 'B')
 			return (-1);
-	x = -1;
-	y = -1;
-	while (i - (++x) - 1 >= 0 && j - (++y) - 1 >= 0)
-		if (map[i - x - 1][j - y - 1] == 'Q' || map[i - x - 1][j - y - 1] == 'B')
+		i++;
+		j--;
+	}
+	i = x;
+	j = y;
+	while (i >= 0 && j >= 0)
+	{
+		if (map[i][j] == 'Q' || map[i][j] == 'B')
+			return (-1);
+		i--;
+		j--;
+	}
+	i = x;
+	j = y;
+	if (i - 1 >= 0 && j - 1 >= 0)
+		if (map[i - 1][j - 1] == 'P')
+			return (-1);
+	if (i - 1 >= 0 && j + 1 < size)
+		if (map[i - 1][j + 1] == 'P')
 			return (-1);
 	return (1);
 }
@@ -95,86 +128,84 @@ int		check_result(char **map, int size, short i, short j)
 int		check_validity(char **map, int size)
 {
 	int		i;
+	int		j;
 	int		len;
-	int		tmp;
+	int		king;
 
-	i = 1;
-	len = ft_strlen(map[0]);
-	if (len < 1 && len > 7)
-		return (-1);
-	if (len != size)
-		return (-1);
+	i = 0;
+	j = -1;
+	king = 0;
 	while (i < size)
 	{
-		tmp = ft_strlen(map[i]);
-		if (tmp != len || tmp != size)
+		len = ft_strlen(map[i]);
+		if (len < 1 && len > 7)
 			return (-1);
+		if (len != size)
+			return (-1);
+		if (len == 1 && map[i][0] != 'K')
+			return (-1);
+		while (map[i][++j])
+		{
+			if (map[i][j] == 'K')
+				king++;
+		}
+		j = -1;
 		i++;
 	}
+	if (king != 1)
+		return (-1);
 	return (1);
 }
 
-void	check_mate(char **map, int size)
+int		check_mate(char **map, int size)
 {
-	short	i;
-	short	j;
-	int		king;
-	short	x;
-	short	y;
-	int		flag;
+	int		tmp;
+	int		i;
+	int		j;
 
-	print_map(map);
+	tmp = 0;
+	i = 0;
+	j = 0;
 	if (check_validity(map, size) == -1)
-		write(1, "\n", 1);
-	else
+		return (-2);
+//	print_map(map);
+	while (map[i])
 	{
-		if (size == 1)
-			write(1, "Fail\n", 5);
-		else
+		while (map[i][j])
 		{
-			i = -1;
-			j = -1;
-			king = 0;
-			flag = 0;
-			while (++j < size)
+			if (map[i][j] == 'K')
 			{
-				while (++i < size)
-				{
-					if (map[j][i] == 'K')
-					{
-						x = i;
-						y = j;
-						king++;
-					}
-					else if (map[j][i] == 'R' || map[j][i] == 'P' || map[j][i] == 'Q'
-							|| map[j][i] == 'B')
-						flag++;
-				}
-				i = -1;
+				tmp = 1;
+				break ;
 			}
-			if (king != 1)
-				write(1, "\n", 1);
-			else
-			{
-				if (flag == 0)
-					write(1, "Fail\n", 5);
-				else
-				{
-					if (check_result(map, size, x, y) == -1)
-						write(1, "Fail\n", 5);
-					else
-						write(1, "Success\n", 8);
-				}
-			}
+			j++;
 		}
+		if (tmp == 1)
+			break ;
+		j = 0;
+		i++;
 	}
+	if ((tmp = check_result(map, size, i, j)) == -1)
+		return (1);
+	else if (tmp == 1)
+		return (-1);
+	return (-1);
 }
 
 int		main(int argc, char **argv)
 {
+	int		tmp;
+
 	if (argc < 2 || argc > 8)
 		write(1, "\n", 1);
 	else
-		check_mate(&argv[1], argc - 1);
+	{
+		if ((tmp = check_mate(&argv[1], argc - 1)) == -1)
+			write(1, "Fail\n", 5);
+		else if (tmp == 1)
+			write(1, "Success\n", 8);
+		else if (tmp == -2)
+			write(1, "\n", 1);
+	}
 	return (0);
 }

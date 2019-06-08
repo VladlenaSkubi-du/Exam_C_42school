@@ -31,10 +31,14 @@ Examples:
 
 $> ./chessmate '..' '.K' | cat -e
 Fail$
-$> ./check_mate 'R...' '.K..' '..P.' '....' | cat -e - THE WRONG ONE
+$> ./check_mate 'R...' '.K..' '..P.' '....' | cat -e - THE WRONG ONE, SHOULD BE FAIL
 Success$
-$> ./chessmate 'R...' 'iheK' '....' 'jeiR' | cat -e - THE WRONG ONE
+$> ./chessmate 'R...' 'iheK' '....' 'jeiR' | cat -e
 Success$
 $> ./chessmate | cat -e
 $
-$>
+$
+
+_____________________________________________________________________________________There will be test:
+$> ./chessmate '...B.' '.B...' '$%^&*' '...K.' '.....' | cat -e
+Success$
